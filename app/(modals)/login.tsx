@@ -1,13 +1,18 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
 import React from 'react';
 import { useWarmUpBrowser } from '@/hooks/useWarmUpBrowser';
+import { defaultStyles } from '@/constants/Styles';
 
 const Page = () => {
   useWarmUpBrowser();
 
   return (
     <View style={styles.container}>
-      <Text>Login</Text>
+      <TextInput
+        autoCapitalize='none'
+        placeholder='Email'
+        style={[defaultStyles.inputField]}
+      />
     </View>
   );
 };
