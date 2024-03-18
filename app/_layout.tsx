@@ -1,8 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
-import { useRouter } from 'expo-router';
-import { SplashScreen, Stack } from 'expo-router';
+import { SplashScreen, Stack, useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { Touchable, TouchableOpacity } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
@@ -25,16 +24,6 @@ const tokenCache = {
       return;
     }
   },
-};
-
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
-
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -65,19 +54,16 @@ export default function RootLayout() {
   // wrap the RootLayoutNav by ClerkProvider
   // return <RootLayoutNav />;
   return (
-    <ClerkProvider
-      publishableKey={CLERK_PUBLISHABLE_KEY!}
-      tokenCache={tokenCache}
-    >
+    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY!} tokenCache={tokenCache}>
       <RootLayoutNav />
     </ClerkProvider>
   );
 }
 
 function RootLayoutNav() {
-  const router = useRouter();
   // obtain auth status from clerk
   const { isLoaded, isSignedIn } = useAuth();
+  const router = useRouter();
 
   // Automatic trigger login page
   useEffect(() => {
@@ -88,9 +74,8 @@ function RootLayoutNav() {
 
   return (
     <Stack>
-      <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
       <Stack.Screen
-        name='(modals)/login'
+        name="(modals)/login"
         options={{
           title: 'Log in or sign up',
           presentation: 'modal',
@@ -104,6 +89,7 @@ function RootLayoutNav() {
           ),
         }}
       />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name='listing/[id]' options={{ headerTitle: '' }} />
       <Stack.Screen
         name='(modals)/booking'
