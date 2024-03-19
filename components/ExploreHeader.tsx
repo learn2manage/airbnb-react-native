@@ -1,9 +1,16 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import React from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import { useRef, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
+
 import Colors from '@/constants/Colors';
 
 const categories = [
@@ -38,6 +45,15 @@ const categories = [
 ];
 
 const ExploreHeader = () => {
+  const scrollRef = useRef<ScrollView>(null);
+  const itemsRef = useRef<Array<TouchableOpacity | null>>([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const selectCategory = (index: number) => {
+    const selected = itemsRef.current[index];
+    setActiveIndex(index);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#FFF' }}>
       <View style={styles.container}>
@@ -59,6 +75,34 @@ const ExploreHeader = () => {
             <Ionicons name='options-outline' size={24} />
           </TouchableOpacity>
         </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            alignItems: 'center',
+            gap: 20,
+            paddingHorizontal: 16,
+          }}>
+          {categories.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              ref={(el) => (itemsRef.current[index] = el)}
+              style={
+                activeIndex === index
+                  ? styles.categoriesBtnActive
+                  : styles.categoriesBtn
+              }
+              onPress={() => selectCategory(index)}>
+              <MaterialIcons
+                name={item.icon as any}
+                size={24}
+                color={
+                  activeIndex === index ? '#000' : Colors.grey
+                }></MaterialIcons>
+              <Text>{item.name}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -68,6 +112,14 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#FFF',
     height: 130,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    shadowOffset: {
+      width: 1,
+      height: 10,
+    },
   },
   actionRow: {
     flexDirection: 'row',
@@ -99,6 +151,30 @@ const styles = StyleSheet.create({
       width: 1,
       height: 1,
     },
+  },
+  categoryText: {
+    fontSize: 14,
+    fontFamily: 'mon-sb',
+    color: Colors.grey,
+  },
+  categoryTextActive: {
+    fontSize: 14,
+    fontFamily: 'mon-sb',
+    color: '#000',
+  },
+  categoriesBtn: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 8,
+  },
+  categoriesBtnActive: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderBottomColor: '#000',
+    borderBottomWidth: 2,
+    paddingBottom: 8,
   },
 });
 
