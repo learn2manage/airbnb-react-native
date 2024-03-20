@@ -1,12 +1,12 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import React from 'react';
-import { Link, Stack } from 'expo-router';
+import { Stack } from 'expo-router';
 import ExploreHeader from '@/components/ExploreHeader';
 import Listings from '@/components/Listings';
 
 const Page = () => {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flexGrow: 1, marginTop: 80 }}>
       <Stack.Screen
         options={{
           header: () => <ExploreHeader />,
