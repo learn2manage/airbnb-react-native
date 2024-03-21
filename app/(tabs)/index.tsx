@@ -1,10 +1,17 @@
 import { View } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { Stack } from 'expo-router';
 import ExploreHeader from '@/components/ExploreHeader';
 import Listings from '@/components/Listings';
 
 const Page = () => {
+  const [category, setCategory] = useState<string>('Tiny homes');
+
+  const onDataChanged = (category: string) => {
+    //console.log('CHANGED: ', category);
+    setCategory(category);
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <Stack.Screen
@@ -12,9 +19,9 @@ const Page = () => {
           headerShown: false,
         }}
       />
-      <ExploreHeader />
+      <ExploreHeader onCategoryChanged={onDataChanged} />
 
-      <Listings />
+      <Listings listings={[]} category={category} />
     </View>
   );
 };
