@@ -6,12 +6,14 @@ import Listings from '@/components/Listings';
 
 const Page = () => {
   return (
-    <View style={{ flexGrow: 1, marginTop: 80 }}>
+    <View style={{ flex: 1 }}>
       <Stack.Screen
         options={{
-          header: () => <ExploreHeader />,
+          headerShown: false,
         }}
       />
+      <ExploreHeader />
+
       <Listings />
     </View>
   );
