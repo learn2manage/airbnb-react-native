@@ -8,7 +8,7 @@ interface Props {
 
 const Listings = ({ listings, category }: Props) => {
   useEffect(() => {
-    console.log('RELOAD LISTINGS: ');
+    console.log('RELOAD LISTINGS: ', listings.length);
   }, [category]);
   return (
     <View style={{ flex: 1, marginTop: 5, backgroundColor: '#8ee490' }}>
