@@ -11,7 +11,7 @@ const Listings = ({ listings, category }: Props) => {
     console.log('RELOAD LISTINGS: ');
   }, [category]);
   return (
-    <View>
+    <View style={{ flex: 1, marginTop: 5, backgroundColor: '#8ee490' }}>
       <Text>Listings {category}</Text>
     </View>
   );

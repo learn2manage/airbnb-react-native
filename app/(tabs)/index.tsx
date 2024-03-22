@@ -13,12 +13,13 @@ const Page = () => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: '#5e59e6' }}>
       <Stack.Screen
         options={{
           headerShown: false,
         }}
       />
+
       <ExploreHeader onCategoryChanged={onDataChanged} />
 
       <Listings listings={[]} category={category} />
