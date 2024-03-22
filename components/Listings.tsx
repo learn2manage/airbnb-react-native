@@ -1,33 +1,87 @@
-import { View, Text, FlatList, ListRenderItem } from 'react-native';
+import {
+    View,
+    Image,
+    Text,
+    FlatList,
+    ListRenderItem,
+    TouchableOpacity,
+    StyleSheet,
+} from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'expo-router';
+import { Listing } from '@/interfaces/listing';
+import { Ionicons } from '@expo/vector-icons';
 
 interface Props {
-  listings: any[];
-  category: string;
+    listings: any[];
+    category: string;
 }
 
-const Listings = ({ listings: items , category }: Props) => {
-  const [loading, setLoading] = useState(false);
-  const listRef = useRef<FlatList>(null);
+const Listings = ({ listings: items, category }: Props) => {
+    const [loading, setLoading] = useState(false);
+    const listRef = useRef<FlatList>(null);
 
-  useEffect(() => {
-    console.log('RELOAD LISTINGS: ', items.length);
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 200)
-  }, [category]);
+    useEffect(() => {
+        console.log('RELOAD LISTINGS: ', items.length);
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+        }, 200);
+    }, [category]);
 
-  const renderRow: ListRenderItem<any> = ({ item }) => (
-  <Link href={`/listing/${item.id}`}>Go there</Link>
-)
+    const renderRow: ListRenderItem<Listing> = ({ item }) => (
+        // component inside expo router Link must use asChild
+        <Link href={`/listing/${item.id}`} asChild>
+            <TouchableOpacity>
+                <View style={styles.listing}>
+                    {item.medium_url ? (
+                        <>
+                            <Image
+                                source={{ uri: item.medium_url }}
+                                style={styles.image}
+                            />
+                            <TouchableOpacity
+                                style={{
+                                    position: 'absolute',
+                                    right: 30,
+                                    top: 30,
+                                }}
+                            >
+                                <Ionicons
+                                    name="heart-outline"
+                                    size={24}
+                                    color={'#000'}
+                                />
+                            </TouchableOpacity>
+                        </>
+                    ) : (
+                        <Text>{item.name}, no iamge. </Text>
+                    )}
+                </View>
+            </TouchableOpacity>
+        </Link>
+    );
 
-  return (
-    <View style={{ flex: 1, marginTop: 5, backgroundColor: '#8ee490' }}>
-      <FlatList renderItem={renderRow} ref={listRef} data={ loading? [] : items } />
-    </View>
-  );
+    return (
+        <View style={{ flex: 1, marginTop: 5, backgroundColor: '#8ee490' }}>
+            <FlatList
+                renderItem={renderRow}
+                ref={listRef}
+                data={loading ? [] : items}
+            />
+        </View>
+    );
 };
+
+const styles = StyleSheet.create({
+    listing: {
+        padding: 16,
+    },
+    image: {
+        width: '100%',
+        height: 300,
+        borderRadius: 10,
+    },
+});
 
 export default Listings;
