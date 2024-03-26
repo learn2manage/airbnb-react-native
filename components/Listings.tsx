@@ -11,6 +11,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'expo-router';
 import { Listing } from '@/interfaces/listing';
 import { Ionicons } from '@expo/vector-icons';
+import Animated, { FadeInLeft, FadeInRight } from 'react-native-reanimated';
 
 interface Props {
   listings: any[];
@@ -33,7 +34,10 @@ const Listings = ({ listings: items, category }: Props) => {
     // component inside expo router Link must use asChild
     <Link href={`/listing/${item.id}`} asChild>
       <TouchableOpacity>
-        <View style={styles.listing}>
+        <Animated.View
+          style={styles.listing}
+          entering={FadeInRight}
+          exiting={FadeInLeft}>
           {item.medium_url ? (
             <>
               <Image source={{ uri: item.medium_url }} style={styles.image} />
@@ -64,7 +68,7 @@ const Listings = ({ listings: items, category }: Props) => {
             <Text style={{ fontFamily: 'mon-sb' }}>$ {item.price}</Text>
             <Text style={{ fontFamily: 'mon' }}>night</Text>
           </View>
-        </View>
+        </Animated.View>
       </TouchableOpacity>
     </Link>
   );
