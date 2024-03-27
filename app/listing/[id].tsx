@@ -115,7 +115,7 @@ const DetailsPage = () => {
                     scale: interpolate(
                         scrollOffset.value,
                         [-IMG_HEIGHT, 0, IMG_HEIGHT],
-                        [2, 1, 1]
+                        [3, 1, 1]
                     ),
                 },
             ],
@@ -260,6 +260,8 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 50,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderColor: Colors.grey,
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',

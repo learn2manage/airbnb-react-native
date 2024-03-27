@@ -1,22 +1,17 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-} from 'react-native';
+import { View, Text } from 'react-native';
 import React from 'react';
-import Colors from '@/constants/Colors';
-import { MaterialIcons } from '@expo/vector-icons';
+import listingData from '@/assets/data/airbnb-listings.json';
+import ListingsMap from '@/components/ListingsMap';
+import listingsDataGeo from '@/assets/data/airbnb-listings.geo.json';
 import { Stack } from 'expo-router';
+import ExploreHeader from '@/components/ExploreHeader';
 
 const Page = () => {
-  return (
-    <View>
-      <Text>Trips</Text>
-    </View>
-  );
+    return (
+        <View style={{ flex: 1, marginTop: 130 }}>
+            <ListingsMap listings={listingsDataGeo} />
+        </View>
+    );
 };
 
 export default Page;
