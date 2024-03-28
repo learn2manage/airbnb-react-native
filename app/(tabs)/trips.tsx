@@ -8,7 +8,7 @@ import ExploreHeader from '@/components/ExploreHeader';
 
 const Page = () => {
     return (
-        <View style={{ flex: 1, marginTop: 130 }}>
+        <View style={{ flex: 1, marginTop: 10 }}>
             <ListingsMap listings={listingsDataGeo} />
         </View>
     );
