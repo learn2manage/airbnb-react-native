@@ -7,7 +7,8 @@ import listingsData from '@/assets/data/airbnb-listings.json';
 import { Listing } from '@/interfaces/listing';
 
 const Page = () => {
-  const [category, setCategory] = useState<string>('Tiny homes');
+  const [category, setCategory] = useState<string>('Wan Chai');
+  //console.log('🚀 ~ Page ~ category:', category);
   const items: Listing[] = useMemo(() => listingsData as any, []);
 
   const onDataChanged = (category: string) => {
