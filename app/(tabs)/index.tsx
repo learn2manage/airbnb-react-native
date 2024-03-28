@@ -17,10 +17,6 @@ const Page = () => {
         () => listingsDataGeo.features as any,
         []
     );
-    console.log(
-        '🚀 ~ file: index.tsx:17 ~ Page ~ geoItems:',
-        listingsDataGeo.features.length
-    );
 
     const onDataChanged = (category: string) => {
         //console.log('CHANGED: ', category);
@@ -28,7 +24,7 @@ const Page = () => {
     };
 
     const filteredItems = useMemo(() => {
-        if (category === '' || category === null) {
+        if (category === '' || category === null || category === 'null') {
             return items;
         } else {
             return items.filter((item) => item.neighbourhood === category);
@@ -36,7 +32,7 @@ const Page = () => {
     }, [category, items]);
 
     const filteredGeoItems = useMemo(() => {
-        if (category === '' || category === null) {
+        if (category === '' || category === null || category === 'null') {
             return geoItems;
         } else {
             return geoItems.filter(
