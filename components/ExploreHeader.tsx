@@ -16,31 +16,31 @@ import Colors from '@/constants/Colors';
 
 const categories = [
   {
-    name: 'Tiny homes',
+    name: 'Wan Chai',
     icon: 'home',
   },
   {
-    name: 'Cabins',
+    name: 'Soho',
     icon: 'house-siding',
   },
   {
-    name: 'Trending',
+    name: 'Central',
     icon: 'local-fire-department',
   },
   {
-    name: 'Play',
+    name: 'Mid-Levels',
     icon: 'videogame-asset',
   },
   {
-    name: 'City',
+    name: 'Causeway Bay',
     icon: 'apartment',
   },
   {
-    name: 'Beachfront',
+    name: 'Sai Ying Pun',
     icon: 'beach-access',
   },
   {
-    name: 'Countryside',
+    name: 'null',
     icon: 'nature-people',
   },
 ];

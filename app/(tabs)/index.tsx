@@ -4,15 +4,24 @@ import { Stack } from 'expo-router';
 import ExploreHeader from '@/components/ExploreHeader';
 import Listings from '@/components/Listings';
 import listingsData from '@/assets/data/airbnb-listings.json';
+import { Listing } from '@/interfaces/listing';
 
 const Page = () => {
   const [category, setCategory] = useState<string>('Tiny homes');
-  const items = useMemo(() => listingsData as any, []);
+  const items: Listing[] = useMemo(() => listingsData as any, []);
 
   const onDataChanged = (category: string) => {
     //console.log('CHANGED: ', category);
     setCategory(category);
   };
+
+  const filteredItems = useMemo(() => {
+    if (category === '' || category === null) {
+      return items;
+    } else {
+      return items.filter((item) => item.neighbourhood === category);
+    }
+  }, [category, items]);
 
   return (
     <View style={{ flex: 1, backgroundColor: '#5e59e6' }}>
@@ -24,7 +33,7 @@ const Page = () => {
 
       <ExploreHeader onCategoryChanged={onDataChanged} />
 
-      <Listings listings={items} category={category} />
+      <Listings listings={filteredItems} category={category} />
     </View>
   );
 };
