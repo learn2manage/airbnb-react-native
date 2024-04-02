@@ -23,6 +23,17 @@ const Listings = ({ listings: items, refresh, category }: Props) => {
   const [loading, setLoading] = useState(false);
   const listRef = useRef<FlatList>(null);
 
+  // Update the view to scroll the list back top
+  useEffect(() => {
+    if (refresh) {
+      scrollListTop();
+    }
+  }, [refresh]);
+
+  const scrollListTop = () => {
+    listRef.current?.scrollToOffset({ offset: 0, animated: true });
+  };
+
   useEffect(() => {
     console.log('RELOAD LISTINGS: ', items.length);
     setLoading(true);
@@ -80,6 +91,9 @@ const Listings = ({ listings: items, refresh, category }: Props) => {
         renderItem={renderRow}
         ref={listRef}
         data={loading ? [] : items}
+        ListHeaderComponent={
+          <Text style={styles.info}>{items.length} homes</Text>
+        }
       />
     </View>
   );
@@ -95,6 +109,12 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 300,
     borderRadius: 10,
+  },
+  info: {
+    textAlign: 'center',
+    fontFamily: 'mon-sb',
+    fontSize: 16,
+    marginTop: 4,
   },
 });
 
