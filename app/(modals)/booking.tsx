@@ -1,8 +1,11 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import Colors from '@/constants/Colors';
-import Animated from 'react-native-reanimated';
+import Animated, { SlideInDown } from 'react-native-reanimated';
 import { BlurView } from 'expo-blur';
+import { defaultStyles } from '@/constants/Styles';
+import { Ionicons } from '@expo/vector-icons';
+import { router, useRouter } from 'expo-router';
 
 const AnimatedTouchableOpacity =
     Animated.createAnimatedComponent(TouchableOpacity);
@@ -31,9 +34,63 @@ const guestsGropus = [
 ];
 
 const booking = () => {
+    const [openCard, setOpenCard] = useState(0);
+    const [selectedPlace, setSelectedPlace] = useState(0);
+    const router = useRouter();
+    const today = new Date().toISOString().substring(0, 10);
+
+    const onClearAll = () => {
+        setSelectedPlace(0);
+        setOpenCard(0);
+    };
+
     return (
         <BlurView intensity={70} style={styles.container} tint="light">
             <Text>booking</Text>
+            {/* Footer */}
+            <Animated.View
+                style={defaultStyles.footer}
+                entering={SlideInDown.delay(200)}
+            >
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                    }}
+                >
+                    <TouchableOpacity
+                        style={{ height: '100%', justifyContent: 'center' }}
+                        onPress={onClearAll}
+                    >
+                        <Text
+                            style={{
+                                fontSize: 18,
+                                fontFamily: 'mon-sb',
+                                textDecorationLine: 'underline',
+                            }}
+                        >
+                            Clear all
+                        </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={[
+                            defaultStyles.btn,
+                            { paddingRight: 20, paddingLeft: 50 },
+                        ]}
+                        onPress={() => router.back()}
+                    >
+                        <Ionicons
+                            name="search-outline"
+                            size={24}
+                            style={defaultStyles.btnIcon}
+                            color={'#fff'}
+                        />
+                        <Text style={defaultStyles.btnText}>Search</Text>
+                    </TouchableOpacity>
+                </View>
+            </Animated.View>
         </BlurView>
     );
 };

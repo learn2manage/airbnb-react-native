@@ -72,7 +72,7 @@ function RootLayoutNav() {
 
     // Automatic trigger login page
     useEffect(() => {
-        if (isLoaded && !isSignedIn) {
+        if (isLoaded && !isSignedIn && false) {
             router.push('/(modals)/login');
         }
     }, [isLoaded]);
@@ -88,7 +88,11 @@ function RootLayoutNav() {
                         fontFamily: 'mon-sb',
                     },
                     headerLeft: () => (
-                        <TouchableOpacity onPress={() => router.back()}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                router.push('/');
+                            }}
+                        >
                             <Ionicons name="close-outline" size={28} />
                         </TouchableOpacity>
                     ),
