@@ -51,9 +51,10 @@ const Page = () => {
         }}
       />
       <ExploreHeader onCategoryChanged={onDataChanged} />
-      <ListingsMap listings={filteredGeoItems} />
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <ListingsBottomSheet />
+        <ListingsMap listings={filteredGeoItems} />
+
+        <ListingsBottomSheet listings={filteredItems} category={category} />
       </GestureHandlerRootView>
       {/* <Listings listings={filteredItems} category={category} /> */}
     </View>

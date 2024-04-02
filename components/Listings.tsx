@@ -14,11 +14,12 @@ import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInLeft, FadeInRight } from 'react-native-reanimated';
 
 interface Props {
-  listings: any[];
+  listings: Listing[];
+  refresh: number;
   category: string;
 }
 
-const Listings = ({ listings: items, category }: Props) => {
+const Listings = ({ listings: items, refresh, category }: Props) => {
   const [loading, setLoading] = useState(false);
   const listRef = useRef<FlatList>(null);
 

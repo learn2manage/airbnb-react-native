@@ -3,8 +3,15 @@ import React, { useMemo, useRef, useState } from 'react';
 import Colors from '@/constants/Colors';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { Ionicons } from '@expo/vector-icons';
+import Listings from './Listings';
+import { Listing } from '@/interfaces/listing';
 
-const ListingsBottomSheet = () => {
+interface Props {
+  listings: Listing[];
+  category: string;
+}
+
+const ListingsBottomSheet = ({ listings, category }: Props) => {
   const snapPoints = useMemo(() => ['10%', '100%'], []);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const [refresh, setRefresh] = useState<number>(0);
@@ -23,8 +30,8 @@ const ListingsBottomSheet = () => {
       handleIndicatorStyle={{ backgroundColor: Colors.grey }}
       style={styles.sheetContainer}>
       <View style={styles.contentContainer}>
+        <Listings listings={listings} category={category} />
         <View style={styles.absoluteView}>
-          <Text>Testing Bottom Sheet</Text>
           <TouchableOpacity onPress={onShowMap} style={styles.btn}>
             <Text style={{ fontFamily: 'mon-sb', color: '#fff' }}>Map</Text>
             <Ionicons
@@ -43,6 +50,7 @@ const ListingsBottomSheet = () => {
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
+    backgroundColor: '#2a9ac7',
   },
   absoluteView: {
     position: 'absolute',
