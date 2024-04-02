@@ -7,11 +7,11 @@ import { Stack } from 'expo-router';
 import ExploreHeader from '@/components/ExploreHeader';
 
 const Page = () => {
-    return (
-        <View style={{ flex: 1, marginTop: 10 }}>
-            <ListingsMap listings={listingsDataGeo} />
-        </View>
-    );
+  return (
+    <View>
+      <Text>Trips</Text>
+    </View>
+  );
 };
 
 export default Page;
