@@ -15,14 +15,14 @@ import { useRouter } from 'expo-router';
 
 enum Strategy {
   Google = 'oauth_google',
-  Apple = 'oauth_apple'
+  Apple = 'oauth_apple',
 }
 
 const Page = () => {
   useWarmUpBrowser();
   const router = useRouter();
-  const { startOAuthFlow: googleAuth } = useOAuth({ strategy: 'oauth_google' })
-  const { startOAuthFlow: appleAuth } = useOAuth({ strategy: 'oauth_apple' })
+  const { startOAuthFlow: googleAuth } = useOAuth({ strategy: 'oauth_google' });
+  const { startOAuthFlow: appleAuth } = useOAuth({ strategy: 'oauth_apple' });
 
   const onSelectAuth = async (strategy: Strategy) => {
     const selectedAuth = {
@@ -31,18 +31,24 @@ const Page = () => {
     }[strategy];
 
     try {
-      const { createdSessionId, setActive } = await selectedAuth()
-      console.log("🚀 ~ file: login.tsx:35 ~ onSelectAuth ~ createdSessionId:", createdSessionId)
+      const { createdSessionId, setActive } = await selectedAuth();
+      console.log(
+        '🚀 ~ file: login.tsx:35 ~ onSelectAuth ~ createdSessionId:',
+        createdSessionId,
+      );
 
       if (createdSessionId) {
-        setActive!({ session: createdSessionId })
+        setActive!({ session: createdSessionId });
+        // Note that Google Auth will prompt Unmatch route error.
+        // but router.push will force user back to root
+        console.log('Before Router.Push to root.');
         router.push('/');
       }
     } catch (err) {
       console.error('OAuth error: ', err);
     }
-  }
-  
+  };
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -83,13 +89,17 @@ const Page = () => {
         </TouchableOpacity>
 
         {/* Apple */}
-        <TouchableOpacity style={styles.btnOutline} onPress={() => onSelectAuth(Strategy.Apple)}>
+        <TouchableOpacity
+          style={styles.btnOutline}
+          onPress={() => onSelectAuth(Strategy.Apple)}>
           <Ionicons name='logo-apple' size={24} style={defaultStyles.btnIcon} />
           <Text style={styles.btnOutlineText}>Continue with Apple</Text>
         </TouchableOpacity>
 
         {/* Google */}
-        <TouchableOpacity style={styles.btnOutline} onPress={() => onSelectAuth(Strategy.Google)}>
+        <TouchableOpacity
+          style={styles.btnOutline}
+          onPress={() => onSelectAuth(Strategy.Google)}>
           <Ionicons
             name='logo-google'
             size={24}
@@ -147,4 +157,3 @@ const styles = StyleSheet.create({
     fontFamily: 'mon-sb',
   },
 });
-
