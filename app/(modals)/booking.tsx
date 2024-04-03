@@ -1,11 +1,21 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
+import { ScrollView, StyleSheet, Text, View, Image } from 'react-native';
+import {
+    GestureHandlerRootView,
+    TextInput,
+} from 'react-native-gesture-handler';
+import { useState } from 'react';
 import Colors from '@/constants/Colors';
-import Animated, { SlideInDown } from 'react-native-reanimated';
+import Animated, {
+    FadeIn,
+    FadeOut,
+    SlideInDown,
+} from 'react-native-reanimated';
 import { BlurView } from 'expo-blur';
 import { defaultStyles } from '@/constants/Styles';
+import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { router, useRouter } from 'expo-router';
+import { TouchableOpacity } from '@gorhom/bottom-sheet';
+import { places } from '@/assets/data/places';
 
 const AnimatedTouchableOpacity =
     Animated.createAnimatedComponent(TouchableOpacity);
@@ -45,53 +55,155 @@ const booking = () => {
     };
 
     return (
-        <BlurView intensity={70} style={styles.container} tint="light">
-            <Text>booking</Text>
-            {/* Footer */}
-            <Animated.View
-                style={defaultStyles.footer}
-                entering={SlideInDown.delay(200)}
-            >
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}
-                >
-                    <TouchableOpacity
-                        style={{ height: '100%', justifyContent: 'center' }}
-                        onPress={onClearAll}
-                    >
-                        <Text
-                            style={{
-                                fontSize: 18,
-                                fontFamily: 'mon-sb',
-                                textDecorationLine: 'underline',
-                            }}
-                        >
-                            Clear all
-                        </Text>
-                    </TouchableOpacity>
+        // Must wrap the view with GestureHandlerRootView, otherwise generate error in Android
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <BlurView intensity={70} style={styles.container} tint="light">
+                {/* Where */}
+                <View style={styles.card}>
+                    {openCard != 0 && (
+                        <AnimatedTouchableOpacity
+                            onPress={() => setOpenCard(0)}
+                            style={styles.cardPreview}
+                            entering={FadeIn.duration(200)}
+                            exiting={FadeOut.duration(200)}>
+                            <Text style={styles.previewText}>Where</Text>
+                            <Text style={styles.previewText}>I'm flexible</Text>
+                        </AnimatedTouchableOpacity>
+                    )}
 
-                    <TouchableOpacity
-                        style={[
-                            defaultStyles.btn,
-                            { paddingRight: 20, paddingLeft: 50 },
-                        ]}
-                        onPress={() => router.back()}
-                    >
-                        <Ionicons
-                            name="search-outline"
-                            size={24}
-                            style={defaultStyles.btnIcon}
-                            color={'#fff'}
-                        />
-                        <Text style={defaultStyles.btnText}>Search</Text>
-                    </TouchableOpacity>
+                    {openCard == 0 && (
+                        <Text style={styles.cardHeader}>Where To?</Text>
+                    )}
+                    {openCard == 0 && (
+                        <Animated.View
+                            entering={FadeIn}
+                            exiting={FadeOut}
+                            style={styles.cardBody}>
+                            <View style={styles.searchSection}>
+                                <Ionicons
+                                    style={styles.searchIcon}
+                                    name="search"
+                                    size={20}
+                                    color="#000"
+                                />
+                                <TextInput
+                                    style={styles.inputField}
+                                    placeholder="Search destinations"
+                                    placeholderTextColor={Colors.grey}
+                                />
+                            </View>
+
+                            <ScrollView
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                contentContainerStyle={styles.placesContainer}>
+                                {places.map((item, index) => (
+                                    <TouchableOpacity
+                                        onPress={() => setSelectedPlace(index)}
+                                        key={index}>
+                                        <Image
+                                            source={item.img}
+                                            style={
+                                                selectedPlace == index
+                                                    ? styles.placeSelected
+                                                    : styles.place
+                                            }
+                                        />
+                                        <Text
+                                            style={{
+                                                fontFamily: 'mon',
+                                                paddingTop: 6,
+                                            }}>
+                                            {item.title}
+                                        </Text>
+                                    </TouchableOpacity>
+                                ))}
+                            </ScrollView>
+                        </Animated.View>
+                    )}
                 </View>
-            </Animated.View>
-        </BlurView>
+
+                {/* When */}
+                <View style={styles.card}>
+                    {openCard != 1 && (
+                        <AnimatedTouchableOpacity
+                            onPress={() => setOpenCard(1)}
+                            style={styles.cardPreview}
+                            entering={FadeIn.duration(200)}
+                            exiting={FadeOut.duration(200)}>
+                            <Text style={styles.previewText}>When</Text>
+                            <Text style={styles.previewText}>Any week</Text>
+                        </AnimatedTouchableOpacity>
+                    )}
+                    {openCard === 1 && (
+                        <>
+                            <Text style={styles.cardHeader}>
+                                When is your trip?
+                            </Text>
+                        </>
+                    )}
+                </View>
+
+                {/* Who */}
+                <View style={styles.card}>
+                    {openCard != 2 && (
+                        <AnimatedTouchableOpacity
+                            onPress={() => setOpenCard(2)}
+                            style={styles.cardPreview}
+                            entering={FadeIn.duration(200)}
+                            exiting={FadeOut.duration(200)}>
+                            <Text style={styles.previewText}>Who</Text>
+                            <Text style={styles.previewText}>Add guests</Text>
+                        </AnimatedTouchableOpacity>
+                    )}
+                    {openCard === 2 && (
+                        <>
+                            <Text style={styles.cardHeader}>Who's coming?</Text>
+                        </>
+                    )}
+                </View>
+
+                {/* Footer */}
+                <Animated.View
+                    style={defaultStyles.footer}
+                    entering={SlideInDown.delay(200)}>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                        }}>
+                        <TouchableOpacity
+                            style={{ height: '100%', justifyContent: 'center' }}
+                            onPress={onClearAll}>
+                            <Text
+                                style={{
+                                    fontSize: 18,
+                                    fontFamily: 'mon-sb',
+                                    textDecorationLine: 'underline',
+                                }}>
+                                Clear all
+                            </Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={[
+                                defaultStyles.btn,
+                                { paddingRight: 20, paddingLeft: 50 },
+                            ]}
+                            onPress={() => router.back()}>
+                            <Ionicons
+                                name="search-outline"
+                                size={24}
+                                style={defaultStyles.btnIcon}
+                                color={'#fff'}
+                            />
+                            <Text style={defaultStyles.btnText}>Search</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Animated.View>
+            </BlurView>
+        </GestureHandlerRootView>
     );
 };
 
