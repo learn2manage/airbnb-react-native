@@ -17,6 +17,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from '@gorhom/bottom-sheet';
 import { places } from '@/assets/data/places';
 
+// @ts-ignore
+import DatePicker from 'react-native-modern-datepicker';
+
 const AnimatedTouchableOpacity =
     Animated.createAnimatedComponent(TouchableOpacity);
 
@@ -110,10 +113,12 @@ const booking = () => {
                                             }
                                         />
                                         <Text
-                                            style={{
-                                                fontFamily: 'mon',
-                                                paddingTop: 6,
-                                            }}>
+                                            style={[
+                                                { paddingTop: 6 },
+                                                selectedPlace == index
+                                                    ? { fontFamily: 'mon-sb' }
+                                                    : { fontFamily: 'mon' },
+                                            ]}>
                                             {item.title}
                                         </Text>
                                     </TouchableOpacity>
@@ -137,9 +142,22 @@ const booking = () => {
                     )}
                     {openCard === 1 && (
                         <>
-                            <Text style={styles.cardHeader}>
+                            <Animated.Text
+                                entering={FadeIn}
+                                style={styles.cardHeader}>
                                 When is your trip?
-                            </Text>
+                            </Animated.Text>
+                            <Animated.View style={styles.cardBody}>
+                                <DatePicker
+                                    current={today}
+                                    selected={today}
+                                    mode={'calendar'}
+                                    options={{
+                                        headerFont: 'mon-sb',
+                                        defaultFont: 'mon',
+                                        mainColor: Colors.primary,
+                                    }}></DatePicker>
+                            </Animated.View>
                         </>
                     )}
                 </View>
@@ -158,7 +176,11 @@ const booking = () => {
                     )}
                     {openCard === 2 && (
                         <>
-                            <Text style={styles.cardHeader}>Who's coming?</Text>
+                            <Animated.Text style={styles.cardHeader}>
+                                Who's coming?
+                            </Animated.Text>
+                            <Animated.View
+                                style={styles.cardBody}></Animated.View>
                         </>
                     )}
                 </View>
