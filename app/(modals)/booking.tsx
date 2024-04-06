@@ -23,7 +23,7 @@ import DatePicker from 'react-native-modern-datepicker';
 const AnimatedTouchableOpacity =
     Animated.createAnimatedComponent(TouchableOpacity);
 
-const guestsGropus = [
+const guestsGroups = [
     {
         name: 'Adults',
         text: 'Ages 13 or above',
@@ -49,12 +49,26 @@ const guestsGropus = [
 const booking = () => {
     const [openCard, setOpenCard] = useState(0);
     const [selectedPlace, setSelectedPlace] = useState(0);
+    const [groups, setGroups] = useState(guestsGroups);
     const router = useRouter();
     const today = new Date().toISOString().substring(0, 10);
 
     const onClearAll = () => {
         setSelectedPlace(0);
         setOpenCard(0);
+        // this does not work, console log confirms guestsGroups counts are modified.
+        console.log(
+            '🚀 ~ file: booking.tsx ~ onClearAll ~ guestsGroups:',
+            guestsGroups
+        );
+        //setGroups(guestsGroups);
+
+        // Having to reset count to 0 one by one instead
+        const newGroups = guestsGroups.map((group) => ({
+            ...group,
+            count: 0,
+        }));
+        setGroups(newGroups);
     };
 
     return (
@@ -114,10 +128,13 @@ const booking = () => {
                                         />
                                         <Text
                                             style={[
-                                                { paddingTop: 6 },
+                                                {
+                                                    fontFamily: 'mon',
+                                                    paddingTop: 6,
+                                                },
                                                 selectedPlace == index
                                                     ? { fontFamily: 'mon-sb' }
-                                                    : { fontFamily: 'mon' },
+                                                    : null,
                                             ]}>
                                             {item.title}
                                         </Text>
@@ -179,8 +196,86 @@ const booking = () => {
                             <Animated.Text style={styles.cardHeader}>
                                 Who's coming?
                             </Animated.Text>
-                            <Animated.View
-                                style={styles.cardBody}></Animated.View>
+                            <Animated.View style={styles.cardBody}>
+                                {groups.map((item, index) => (
+                                    <View
+                                        key={index}
+                                        style={[
+                                            styles.guestItem,
+                                            index + 1 < guestsGroups.length
+                                                ? styles.itemBorder
+                                                : null,
+                                        ]}>
+                                        <View>
+                                            <Text
+                                                style={{
+                                                    fontFamily: 'mon-sb',
+                                                    fontSize: 14,
+                                                }}>
+                                                {item.name}
+                                            </Text>
+                                            <Text
+                                                style={{
+                                                    fontFamily: 'mon',
+                                                    fontSize: 14,
+                                                    color: Colors.grey,
+                                                }}>
+                                                {item.text}
+                                            </Text>
+                                        </View>
+                                        <View
+                                            style={{
+                                                flexDirection: 'row',
+                                                gap: 10,
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                            }}>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    const newGroups = [
+                                                        ...groups,
+                                                    ];
+                                                    newGroups[index].count =
+                                                        newGroups[index].count >
+                                                        0
+                                                            ? newGroups[index]
+                                                                  .count - 1
+                                                            : 0;
+                                                    setGroups(newGroups);
+                                                    console.log(
+                                                        '🚀 ~ file: booking.tsx:67 ~ onClearAll ~ guestsGroups:',
+                                                        guestsGroups
+                                                    );
+                                                }}>
+                                                <Ionicons
+                                                    name="remove-circle-outline"
+                                                    size={26}
+                                                    color={
+                                                        groups[index].count > 0
+                                                            ? Colors.grey
+                                                            : '#cdcdcd'
+                                                    }
+                                                />
+                                            </TouchableOpacity>
+                                            <Text>{item.count}</Text>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    const newGroups = [
+                                                        ...groups,
+                                                    ];
+                                                    newGroups[index].count++;
+                                                    setGroups(newGroups);
+                                                }}>
+                                                <Ionicons
+                                                    name="add-circle-outline"
+                                                    size={26}
+                                                    color={Colors.grey}
+                                                />
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                ))}
+                            </Animated.View>
                         </>
                     )}
                 </View>
