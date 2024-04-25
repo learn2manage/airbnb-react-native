@@ -47,11 +47,12 @@ const Page = () => {
     <View style={{ flex: 1, backgroundColor: '#5e59e6' }}>
       <Stack.Screen
         options={{
-          headerShown: false,
+          header: () => <ExploreHeader onCategoryChanged={onDataChanged} />,
         }}
       />
-      <ExploreHeader onCategoryChanged={onDataChanged} />
       <GestureHandlerRootView style={{ flex: 1 }}>
+        {/* <ExploreHeader onCategoryChanged={onDataChanged} /> */}
+
         <ListingsMap listings={filteredGeoItems} />
 
         <ListingsBottomSheet listings={filteredItems} category={category} />
